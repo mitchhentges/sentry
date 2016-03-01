@@ -10,10 +10,9 @@ from __future__ import absolute_import, print_function
 
 import logging
 
-from django.core.mail import get_connection
-
 from sentry.auth import access
 from sentry.tasks.base import instrumented_task
+from sentry.utils.email import get_connection
 
 logger = logging.getLogger(__name__)
 
