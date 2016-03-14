@@ -14,14 +14,16 @@ from sentry.utils.types import Dict
 
 
 def default_from_email():
-    from getpass import getuser
-    import socket
     try:
+        from getpass import getuser
         user = getuser()
     except Exception:
         user = 'root'
     try:
-        hostname = socket.getfqdn()
+        # Pull from Django core, instead of querying socket.getfqdn() directly.
+        # Django core wraps this in a cached lookup since it's not a super fast query.
+        from django.core.mail.utils import DNS_NAME
+        hostname = DNS_NAME
     except Exception:
         hostname = 'localhost'
     return '@'.join((user, hostname))
